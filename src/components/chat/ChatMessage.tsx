@@ -1,20 +1,38 @@
-import React from 'react'
-import "./ChatMessage.scss";
 import { Avatar } from "@mui/material";
+import { FieldValue, Timestamp } from "firebase/firestore";
+import React from "react";
+import "./ChatMessage.scss";
 
-const ChatMessage = () => {
+type Props = {
+  message: string;
+  timestamp: Timestamp;
+  user: {
+    uid: string;
+    photo: string;
+    email: string;
+    displayName: string;
+  };
+};
+
+const ChatMessage = (props: Props) => {
+  const { message, timestamp, user } = props;
+  // console.log(timestamp.seconds.toDate());
+
   return (
-    <div className='message'>
-        <Avatar />
-        <div className='MessageInfo'>
-            <h4>takuma code
-                <span className='messageTimestamp'>2022/12/18</span>
+    <div className="message">
+      <Avatar src={user?.photo} />
+      <div className="messageInfo">
+        <h4>
+          {user?.displayName}
+          <span className="messageTimestamp">
+            {new Date(timestamp?.toDate()).toLocaleString()}
+          </span>
+        </h4>
 
-                <p>メッセージ本文</p>
-            </h4>
-        </div>
+        <p>{message}</p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatMessage
+export default ChatMessage;
